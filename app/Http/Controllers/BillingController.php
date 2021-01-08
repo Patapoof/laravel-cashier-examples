@@ -9,8 +9,9 @@ class BillingController extends Controller
 {
     public function index (Request $request) {
         $user = auth()->user();
+//        dd($request->all());
         try {
-            $newSubscription = $user->newSubscription('main', 'starter')->create($request->payment_method, ['email' => $user->email]);
+            $newSubscription = $user->newSubscription('main', $request->get('plan'))->create($request->payment_method, ['email' => $user->email]);
         } catch ( IncompletePayment $exception ){
             return redirect()->route(
                 'cashier.payment',
